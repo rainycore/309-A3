@@ -1,0 +1,135 @@
+# StaffLink — A3 Installation Guide
+
+## Environment
+
+Tested on macOS (Darwin 21.6.0) and Ubuntu 24.04 LTS.
+
+## Prerequisites
+
+- Node.js 18+ (https://nodejs.org)
+- npm 9+
+
+---
+
+## 1. Backend Setup
+
+```bash
+cd A3/backend
+npm install
+npx prisma migrate deploy   # Apply DB migrations
+npm run seed                 # Seed the database with test data
+npm start                    # Start backend on port 3000
+```
+
+The backend runs at http://localhost:3000
+
+### Environment Variables (optional)
+
+Create `A3/backend/.env`:
+```
+FRONTEND_URL=http://localhost:5173
+```
+
+---
+
+## 2. Frontend Setup (Development)
+
+```bash
+cd A3/frontend
+npm install
+npm run dev          # Start dev server at http://localhost:5173
+```
+
+The frontend dev server talks to the backend at http://localhost:3000.
+
+---
+
+## 3. Frontend Build (Production)
+
+```bash
+cd A3/frontend
+npm run build        # Outputs to dist/
+```
+
+---
+
+## 4. Deployment
+
+### Option A — Serve with Nginx (Ubuntu 24.04)
+
+1. Install Nginx:
+   ```bash
+   sudo apt update && sudo apt install nginx -y
+   ```
+
+2. Build the frontend:
+   ```bash
+   cd A3/frontend && npm run build
+   sudo cp -r dist/* /var/www/html/
+   ```
+
+3. Configure Nginx for SPA routing:
+   ```nginx
+   server {
+       listen 80;
+       server_name your-domain.com;
+       root /var/www/html;
+       index index.html;
+
+       location / {
+           try_files $uri $uri/ /index.html;
+       }
+   }
+   ```
+
+4. Start backend with PM2:
+   ```bash
+   npm install -g pm2
+   cd A3/backend
+   FRONTEND_URL=http://your-domain.com pm2 start src/server.js --name stafflink-backend -- 3000
+   pm2 save
+   pm2 startup
+   ```
+
+5. Point the frontend at the backend by setting before building:
+   ```bash
+   echo "VITE_API_URL=http://your-domain.com:3000" > A3/frontend/.env
+   npm run build
+   ```
+
+### Option B — Run both locally (simplest)
+
+```bash
+# Terminal 1 — Backend
+cd A3/backend && npm start
+
+# Terminal 2 — Frontend
+cd A3/frontend && npm run dev
+```
+
+Visit http://localhost:5173
+
+---
+
+## 5. Test Accounts (password: 123123)
+
+| Role     | Email                          | Notes                         |
+|----------|-------------------------------|-------------------------------|
+| Admin    | admin1@csc309.utoronto.ca     | Full admin access             |
+| Business | business1@csc309.utoronto.ca  | Verified, jobs & interests    |
+| Business | business2@csc309.utoronto.ca  | Verified, warehouse jobs      |
+| User     | regular1@csc309.utoronto.ca   | Approved quals, active neg.   |
+| User     | regular3@csc309.utoronto.ca   | Catering & customer service   |
+| User     | regular16@csc309.utoronto.ca  | Catering & event experience   |
+| Users    | regular1-20@csc309.utoronto.ca | All 20 seeded regular users  |
+| Business | business1-10@csc309.utoronto.ca | All 10 seeded businesses    |
+
+## 6. Re-seeding
+
+To wipe and reseed the database:
+```bash
+cd A3/backend
+rm -f prisma/dev.db
+npx prisma migrate deploy
+npm run seed
+```

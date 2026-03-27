@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getJob, reportNoShow } from '../../api/jobs';
 import { editJob, deleteJob } from '../../api/businesses';
-import { listPositionTypes } from '../../api/positionTypes';
 import StatusBadge from '../../components/StatusBadge';
 import { format } from 'date-fns';
 
@@ -157,7 +156,7 @@ export default function BusinessJobDetail() {
       <div className="card">
         <div className="btn-row">
           <Link to={`/business/jobs/${id}/candidates`} className="btn btn-primary">Browse Candidates</Link>
-          <Link to={`/business/jobs/${id}/interests`} className="btn btn-outline">Mutual Interests</Link>
+          <Link to={`/business/interests`} className="btn btn-outline">Mutual Interests</Link>
           {canNoShow && (
             <button className="btn btn-danger" onClick={handleNoShow} disabled={noShowLoading}>
               {noShowLoading ? '…' : 'Report No-Show'}

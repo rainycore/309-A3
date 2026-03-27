@@ -373,6 +373,21 @@ code { background: var(--gray-100); padding: 0.1em 0.4em; border-radius: 4px; fo
 section { margin-bottom: 2rem; }
 section h2 { margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gray-200); }
 
+/* ─── Negotiation Chat ────────────────────────────────────────────── */
+.neg-chat { margin-top: 1.5rem; }
+.neg-chat h2 { margin-bottom: 1rem; }
+.chat-messages { min-height: 150px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding: 0.75rem; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); margin-bottom: 0.75rem; }
+.chat-empty { color: var(--gray-400); font-size: 0.875rem; text-align: center; margin: auto; }
+.chat-message { display: flex; flex-direction: column; max-width: 70%; gap: 0.15rem; }
+.chat-message.mine { align-self: flex-end; align-items: flex-end; }
+.chat-message.theirs { align-self: flex-start; align-items: flex-start; }
+.chat-sender { font-size: 0.75rem; color: var(--gray-500); font-weight: 600; }
+.chat-text { background: var(--primary); color: white; padding: 0.4rem 0.75rem; border-radius: 1rem; font-size: 0.9rem; }
+.chat-message.theirs .chat-text { background: var(--gray-200); color: var(--gray-800); }
+.chat-time { font-size: 0.7rem; color: var(--gray-400); }
+.chat-input-row { display: flex; gap: 0.5rem; }
+.chat-input-row input { flex: 1; }
+
 /* ─── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .main-content { padding: 1rem; }

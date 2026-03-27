@@ -1,20 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { getMyNegotiation, decideNegotiation } from '../api/negotiations';
 import { useAuth } from '../context/AuthContext';
 import CountdownTimer from '../components/CountdownTimer';
 import StatusBadge from '../components/StatusBadge';
 import { format } from 'date-fns';
+import { io } from 'socket.io-client';
+import { API_BASE } from '../api/client';
 
 export default function Negotiation() {
   const { role } = useAuth();
-  const navigate = useNavigate();
   const [neg, setNeg] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deciding, setDeciding] = useState(false);
   const [msg, setMsg] = useState('');
   const [expired, setExpired] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   const load = useCallback(() => {
     getMyNegotiation()
@@ -34,6 +39,29 @@ export default function Negotiation() {
     const interval = setInterval(load, 10000);
     return () => clearInterval(interval);
   }, [load]);
+
+  useEffect(() => {
+    if (!neg?.id) return;
+    const token = localStorage.getItem('token');
+    const socket = io(API_BASE, { auth: { token } });
+    socketRef.current = socket;
+    socket.emit('join_negotiation', { negotiation_id: neg.id });
+    socket.on('chat_message', (data) => {
+      setMessages(prev => [...prev, data]);
+    });
+    return () => socket.disconnect();
+  }, [neg?.id]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (!chatInput.trim() || !socketRef.current) return;
+    socketRef.current.emit('chat_message', { negotiation_id: neg.id, message: chatInput.trim() });
+    setChatInput('');
+  };
 
   const handleDecision = async (accepted) => {
     setDeciding(true); setMsg('');
@@ -177,6 +205,32 @@ export default function Negotiation() {
             )}
           </div>
         )}
+
+        <div className="neg-chat card">
+          <h2>Messages</h2>
+          <div className="chat-messages">
+            {messages.length === 0 && <p className="chat-empty">No messages yet. Say something!</p>}
+            {messages.map((m, i) => (
+              <div key={i} className={`chat-message ${m.sender_role === role ? 'mine' : 'theirs'}`}>
+                <span className="chat-sender">{m.sender_role === role ? 'You' : otherParty}</span>
+                <span className="chat-text">{m.message}</span>
+                <span className="chat-time">{format(new Date(m.timestamp), 'HH:mm:ss')}</span>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+          {isActive && (
+            <form className="chat-input-row" onSubmit={sendMessage}>
+              <input
+                value={chatInput}
+                onChange={e => setChatInput(e.target.value)}
+                placeholder="Type a message…"
+                disabled={expired}
+              />
+              <button type="submit" className="btn btn-primary" disabled={!chatInput.trim() || expired}>Send</button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBusiness } from '../../api/businesses';

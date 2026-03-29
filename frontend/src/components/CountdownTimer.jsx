@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 
 export default function CountdownTimer({ expiresAt, onExpire }) {

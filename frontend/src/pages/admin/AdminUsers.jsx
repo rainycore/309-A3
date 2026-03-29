@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { listUsers, suspendUser } from '../../api/users';
 import Pagination from '../../components/Pagination';

@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createJob } from '../../api/businesses';

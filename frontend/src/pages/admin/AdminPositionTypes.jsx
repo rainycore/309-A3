@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { listPositionTypes, createPositionType, updatePositionType, deletePositionType } from '../../api/positionTypes';
 import Pagination from '../../components/Pagination';

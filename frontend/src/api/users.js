@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import client from './client';
 
 export const registerUser = (data) => client.post('/users', data);

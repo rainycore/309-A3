@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { listBusinesses, verifyBusiness } from '../../api/businesses';
 import Pagination from '../../components/Pagination';

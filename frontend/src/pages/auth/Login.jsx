@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { login } from '../../api/auth';

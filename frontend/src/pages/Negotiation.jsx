@@ -1,10 +1,13 @@
+// Generated with Claude Code
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getMyNegotiation, decideNegotiation } from '../api/negotiations';
 import { useAuth } from '../context/AuthContext';
 import CountdownTimer from '../components/CountdownTimer';
 import StatusBadge from '../components/StatusBadge';
+// date-fns (MIT License) — https://github.com/date-fns/date-fns
 import { format } from 'date-fns';
+// socket.io-client (MIT License) — https://github.com/socketio/socket.io-client
 import { io } from 'socket.io-client';
 import { API_BASE } from '../api/client';
 
@@ -100,7 +103,6 @@ export default function Negotiation() {
   if (!neg) return null;
 
   const isRegular = role === 'regular';
-  const isBusiness = role === 'business';
   const myAccepted = isRegular ? neg.candidateAccepted : neg.businessAccepted;
   const theirAccepted = isRegular ? neg.businessAccepted : neg.candidateAccepted;
   const isActive = neg.status === 'active';

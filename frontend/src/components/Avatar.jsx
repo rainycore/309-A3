@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { API_BASE } from '../api/client';
 
 export default function Avatar({ src, name, size = 48 }) {

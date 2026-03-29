@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { listMyInterests } from '../../api/jobs';
@@ -79,7 +80,7 @@ export default function Interests() {
               <div key={interest.id || job.id} className="job-card card">
                 <div className="job-card-header">
                   <div>
-                    <h3>{job.positionType?.name}</h3>
+                    <h3>{job.position_type?.name}</h3>
                     <span className="job-business">{job.business?.business_name}</span>
                   </div>
                   <div>

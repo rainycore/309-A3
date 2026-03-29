@@ -1,3 +1,4 @@
+// Generated with Claude Code
 export default function Pagination({ page, total, limit, onPage }) {
   const totalPages = Math.ceil(total / limit);
   if (totalPages <= 1) return null;

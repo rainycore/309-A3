@@ -1,3 +1,4 @@
+// Generated with Claude Code
 const STATUS_COLORS = {
   open: '#22c55e',
   expired: '#f59e0b',

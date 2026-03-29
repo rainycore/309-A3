@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import client from './client';
 
 export const listJobs = (params) => client.get('/jobs', { params });

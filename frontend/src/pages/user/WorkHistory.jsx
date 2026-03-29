@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { getMe } from '../../api/users';
 import StatusBadge from '../../components/StatusBadge';

@@ -785,8 +785,19 @@ router.get('/interests', requireRole('regular'), async (req, res) => {
     results: interests.map((i) => ({
       id: i.id,
       job_id: i.jobId,
-      candidate: { id: userId, interested: i.candidateInterested ?? null },
-      business: { id: i.job.businessId, interested: i.businessInterested ?? null },
+      candidateInterested: i.candidateInterested ?? null,
+      businessInterested: i.businessInterested ?? null,
+      job: {
+        id: i.job.id,
+        status: i.job.status,
+        salary_min: i.job.salary_min,
+        salary_max: i.job.salary_max,
+        start_time: i.job.start_time.toISOString(),
+        end_time: i.job.end_time.toISOString(),
+        note: i.job.note,
+        position_type: { id: i.job.positionType.id, name: i.job.positionType.name },
+        business: { id: i.job.business.id, business_name: i.job.business.business_name },
+      },
     })),
   });
 });

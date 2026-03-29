@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 

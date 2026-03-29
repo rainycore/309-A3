@@ -1,3 +1,4 @@
+// Generated with Claude Code
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { listJobs } from '../../api/jobs';

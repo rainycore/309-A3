@@ -79,6 +79,9 @@ router.post('/resets/:resetToken', async (req, res) => {
     if (!isValidPassword(password)) {
       return res.status(400).json({ error: 'Invalid password format' });
     }
+    if (await bcrypt.compare(password, account.password)) {
+      return res.status(400).json({ error: 'New password must be different from your current password' });
+    }
     updateData.password = await bcrypt.hash(password, 10);
   }
 

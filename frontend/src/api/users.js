@@ -3,6 +3,7 @@ import client from './client';
 
 export const registerUser = (data) => client.post('/users', data);
 export const getMe = () => client.get('/users/me');
+export const getMyQualifications = () => client.get('/users/me/qualifications');
 export const updateMe = (data) => client.patch('/users/me', data);
 export const setAvailability = (available) =>
   client.patch('/users/me/available', { available });

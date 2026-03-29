@@ -58,7 +58,7 @@ export default function JobDetail() {
       <button className="btn btn-outline btn-sm back-btn" onClick={() => navigate(-1)}>← Back</button>
       <div className="page-header">
         <div>
-          <h1>{job.positionType?.name}</h1>
+          <h1>{job.position_type?.name}</h1>
           <span className="job-business">{job.business?.business_name}</span>
         </div>
         <StatusBadge status={effectiveStatus} />

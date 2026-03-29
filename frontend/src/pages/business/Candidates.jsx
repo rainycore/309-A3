@@ -50,7 +50,7 @@ export default function Candidates() {
     <div className="page">
       <button className="btn btn-outline btn-sm back-btn" onClick={() => window.history.back()}>← Back</button>
       <div className="page-header">
-        <h1>Candidates for {job?.positionType?.name}</h1>
+        <h1>Candidates for {job?.position_type?.name}</h1>
         <p className="page-subtitle">Qualified workers available for this job</p>
       </div>
 

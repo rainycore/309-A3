@@ -56,7 +56,7 @@ export default function AdminQualifications() {
               {quals.map(q => (
                 <tr key={q.id}>
                   <td>{q.user?.first_name} {q.user?.last_name}</td>
-                  <td>{q.positionType?.name}</td>
+                  <td>{q.position_type?.name}</td>
                   <td><StatusBadge status={q.status} /></td>
                   <td>{new Date(q.updatedAt).toLocaleDateString()}</td>
                   <td>

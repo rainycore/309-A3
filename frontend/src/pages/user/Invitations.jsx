@@ -53,7 +53,7 @@ export default function Invitations() {
               <div key={job.id || inv.id} className="job-card card">
                 <div className="job-card-header">
                   <div>
-                    <h3>{job.positionType?.name}</h3>
+                    <h3>{job.position_type?.name}</h3>
                     <span className="job-business">{job.business?.business_name}</span>
                   </div>
                   <StatusBadge status={job.effectiveStatus || job.status || 'open'} />

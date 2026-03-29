@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { listPositionTypes } from '../../api/positionTypes';
-import { createQualification, updateQualification, getQualification } from '../../api/qualifications';
-import { getMe } from '../../api/users';
+import { createQualification, updateQualification } from '../../api/qualifications';
+import { getMyQualifications } from '../../api/users';
 import StatusBadge from '../../components/StatusBadge';
 import Pagination from '../../components/Pagination';
 
@@ -30,8 +30,8 @@ export default function Qualifications() {
   };
 
   const loadMyQuals = () => {
-    getMe().then(r => {
-      const quals = r.data.qualifications || [];
+    getMyQualifications().then(r => {
+      const quals = r.data || [];
       setMyQuals(quals);
       setTotal(quals.length);
     }).catch(() => {});

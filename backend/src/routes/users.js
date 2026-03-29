@@ -327,6 +327,28 @@ router.patch('/:userId/suspended', requireRole('admin'), async (req, res) => {
   });
 });
 
+// ── GET /users/me/qualifications  (Regular) ──────────────────────────────────
+
+router.get('/me/qualifications', requireRole('regular'), async (req, res) => {
+  const userId = req.auth.id;
+  const quals = await prisma.qualification.findMany({
+    where: { userId },
+    include: { positionType: true },
+    orderBy: { updatedAt: 'desc' },
+  });
+  return res.json(quals.map((q) => ({
+    id: q.id,
+    status: q.status,
+    note: q.note,
+    document: q.document,
+    positionTypeId: q.positionTypeId,
+    positionType: { id: q.positionType.id, name: q.positionType.name },
+    updatedAt: q.updatedAt.toISOString(),
+  })));
+});
+
+router.all('/me/qualifications', (_req, res) => res.status(405).json({ error: 'Method Not Allowed' }));
+
 // ── GET /users/me/invitations  (Regular) ─────────────────────────────────────
 
 router.get('/me/invitations', requireRole('regular'), async (req, res) => {

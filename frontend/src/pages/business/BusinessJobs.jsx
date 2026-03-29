@@ -76,7 +76,7 @@ export default function BusinessJobs() {
             <Link key={job.id} to={`/business/jobs/${job.id}`} className="job-card card">
               <div className="job-card-header">
                 <div>
-                  <h3>{job.positionType?.name}</h3>
+                  <h3>{job.position_type?.name}</h3>
                   {job.worker && <span className="muted small">Worker: {job.worker.first_name} {job.worker.last_name}</span>}
                 </div>
                 <StatusBadge status={job.effectiveStatus || job.status} />

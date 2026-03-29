@@ -58,7 +58,7 @@ export default function QualificationReview() {
         <div className="detail-grid">
           <div className="detail-row"><span className="detail-label">Name</span><span>{qual.user?.first_name} {qual.user?.last_name}</span></div>
           <div className="detail-row"><span className="detail-label">Email</span><span>{qual.user?.account?.email}</span></div>
-          <div className="detail-row"><span className="detail-label">Position Type</span><span>{qual.positionType?.name}</span></div>
+          <div className="detail-row"><span className="detail-label">Position Type</span><span>{qual.position_type?.name}</span></div>
           <div className="detail-row"><span className="detail-label">Status</span><span><StatusBadge status={qual.status} /></span></div>
           <div className="detail-row"><span className="detail-label">Submitted</span><span>{new Date(qual.updatedAt).toLocaleString()}</span></div>
         </div>

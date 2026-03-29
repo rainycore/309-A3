@@ -97,7 +97,7 @@ export default function BusinessJobDetail() {
       <button className="btn btn-outline btn-sm back-btn" onClick={() => navigate('/business/jobs')}>← Back</button>
       <div className="page-header">
         <div>
-          <h1>{job.positionType?.name}</h1>
+          <h1>{job.position_type?.name}</h1>
           {job.worker && <span className="muted">Worker: {job.worker.first_name} {job.worker.last_name}</span>}
         </div>
         <div className="page-header-actions">

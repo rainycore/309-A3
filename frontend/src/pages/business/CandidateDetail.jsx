@@ -79,7 +79,7 @@ export default function CandidateDetail() {
 
       {qualification && (
         <div className="card">
-          <h2>Qualification for {job?.positionType?.name}</h2>
+          <h2>Qualification for {job?.position_type?.name}</h2>
           <div className="detail-grid">
             <div className="detail-row"><span className="detail-label">Status</span><span>{qualification.status}</span></div>
             {qualification.note && <div className="detail-row"><span className="detail-label">Note</span><span>{qualification.note}</span></div>}

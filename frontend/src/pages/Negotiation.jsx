@@ -165,7 +165,7 @@ export default function Negotiation() {
           <div className="neg-job-details card">
             <h2>Job Details</h2>
             <div className="detail-grid">
-              <div className="detail-row"><span className="detail-label">Position</span><span>{job.positionType?.name}</span></div>
+              <div className="detail-row"><span className="detail-label">Position</span><span>{job.position_type?.name}</span></div>
               <div className="detail-row"><span className="detail-label">Business</span><span>{job.business?.business_name}</span></div>
               <div className="detail-row"><span className="detail-label">Salary</span><span>${job.salary_min} – ${job.salary_max}/hr</span></div>
               <div className="detail-row"><span className="detail-label">Start</span><span>{format(new Date(job.start_time), 'PPpp')}</span></div>

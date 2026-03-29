@@ -72,7 +72,7 @@ export default function BusinessInterests() {
           <option value="">Select a job…</option>
           {jobs.filter(j => (j.effectiveStatus || j.status) === 'open').map(j => (
             <option key={j.id} value={j.id}>
-              {j.positionType?.name} — {format(new Date(j.start_time), 'MMM d')}
+              {j.position_type?.name} — {format(new Date(j.start_time), 'MMM d')}
             </option>
           ))}
         </select>

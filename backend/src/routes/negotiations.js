@@ -256,15 +256,16 @@ router.get('/negotiations/me', async (req, res) => {
 
   const now = new Date();
   let neg;
+  const jobInclude = { include: { business: true, positionType: true } };
   if (role === 'regular') {
     neg = await prisma.negotiation.findFirst({
       where: { userId: callerId, status: 'active', expiresAt: { gt: now } },
-      include: { job: { include: { business: true } }, user: true },
+      include: { job: jobInclude, user: true },
     });
   } else {
     neg = await prisma.negotiation.findFirst({
       where: { status: 'active', expiresAt: { gt: now }, job: { businessId: callerId } },
-      include: { job: { include: { business: true } }, user: true },
+      include: { job: jobInclude, user: true },
     });
   }
 
@@ -276,11 +277,22 @@ router.get('/negotiations/me', async (req, res) => {
     job_id: neg.jobId,
     user_id: neg.userId,
     business_id: neg.job.businessId,
-    candidate_accepted: neg.candidateAccepted,
-    business_accepted: neg.businessAccepted,
-    expires_at: neg.expiresAt.toISOString(),
+    candidateAccepted: neg.candidateAccepted,
+    businessAccepted: neg.businessAccepted,
+    expiresAt: neg.expiresAt.toISOString(),
     createdAt: neg.createdAt.toISOString(),
     updatedAt: neg.updatedAt.toISOString(),
+    job: {
+      id: neg.job.id,
+      salary_min: neg.job.salary_min,
+      salary_max: neg.job.salary_max,
+      start_time: neg.job.start_time.toISOString(),
+      end_time: neg.job.end_time.toISOString(),
+      note: neg.job.note,
+      positionType: neg.job.positionType ? { id: neg.job.positionType.id, name: neg.job.positionType.name } : null,
+      business: { id: neg.job.business.id, business_name: neg.job.business.business_name },
+    },
+    user: neg.user ? { id: neg.user.id, first_name: neg.user.first_name, last_name: neg.user.last_name } : null,
   });
 });
 

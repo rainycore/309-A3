@@ -46,7 +46,7 @@ export default function Negotiation() {
   useEffect(() => {
     if (!neg?.id) return;
     const token = localStorage.getItem('token');
-    const socket = io(API_BASE, { auth: { token } });
+    const socket = io(API_BASE, { auth: { token }, transports: ['websocket'] });
     socketRef.current = socket;
     socket.emit('join_negotiation', { negotiation_id: neg.id });
     socket.on('chat_message', (data) => {
@@ -188,7 +188,7 @@ export default function Negotiation() {
                     onClick={() => handleDecision(true)}
                     disabled={deciding}
                   >
-                    {deciding ? '…' : '✓ Accept Job'}
+                    {deciding ? '…' : isRegular ? '✓ Accept Job' : '✓ Accept Worker'}
                   </button>
                   <button
                     className="btn btn-danger btn-lg"

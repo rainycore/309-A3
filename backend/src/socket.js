@@ -27,37 +27,63 @@ function attach_sockets(server) {
 
     // Client joins a negotiation room by sending their negotiation ID
     socket.on('join_negotiation', async (data) => {
-      const negId = parseInt(data?.negotiation_id);
-      if (isNaN(negId)) return;
+      try {
+        const negId = parseInt(data?.negotiation_id);
+        if (isNaN(negId)) return;
 
-      const neg = await prisma.negotiation.findUnique({
-        where: { id: negId },
-        include: { job: true },
-      });
-      if (!neg) return;
+        const neg = await prisma.negotiation.findUnique({
+          where: { id: negId },
+          include: { job: true, messages: { orderBy: { createdAt: 'asc' } } },
+        });
+        if (!neg) return;
 
-      const isCandidate = role === 'regular' && neg.userId === userId;
-      const isBusiness  = role === 'business' && neg.job.businessId === userId;
-      if (!isCandidate && !isBusiness) return;
+        const isCandidate = role === 'regular' && neg.userId === userId;
+        const isBusiness  = role === 'business' && neg.job.businessId === userId;
+        if (!isCandidate && !isBusiness) return;
 
-      socket.join(`negotiation:${negId}`);
-      socket.emit('joined', { negotiation_id: negId });
+        socket.join(`negotiation:${negId}`);
+
+        // Send message history to the joining client
+        const history = neg.messages.map(m => ({
+          negotiation_id: negId,
+          sender_id: m.senderId,
+          sender_role: m.senderRole,
+          message: m.message,
+          timestamp: m.createdAt.toISOString(),
+        }));
+        socket.emit('joined', { negotiation_id: negId, history });
+      } catch (err) {
+        console.error('join_negotiation error:', err);
+      }
     });
 
-    // Relay chat messages within a negotiation room (not persisted)
-    socket.on('chat_message', (data) => {
-      const negId = parseInt(data?.negotiation_id);
-      if (isNaN(negId)) return;
-      const room = `negotiation:${negId}`;
-      if (!socket.rooms.has(room)) return;
+    // Relay and persist chat messages within a negotiation room
+    socket.on('chat_message', async (data) => {
+      try {
+        const negId = parseInt(data?.negotiation_id);
+        if (isNaN(negId)) return;
+        const room = `negotiation:${negId}`;
+        if (!socket.rooms.has(room)) return;
 
-      io.to(room).emit('chat_message', {
-        negotiation_id: negId,
-        sender_id: userId,
-        sender_role: role,
-        message: data.message,
-        timestamp: new Date().toISOString(),
-      });
+        const saved = await prisma.message.create({
+          data: {
+            negotiationId: negId,
+            senderId: userId,
+            senderRole: role,
+            message: data.message,
+          },
+        });
+
+        io.to(room).emit('chat_message', {
+          negotiation_id: negId,
+          sender_id: userId,
+          sender_role: role,
+          message: data.message,
+          timestamp: saved.createdAt.toISOString(),
+        });
+      } catch (err) {
+        console.error('chat_message error:', err);
+      }
     });
   });
 

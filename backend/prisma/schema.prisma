@@ -140,4 +140,16 @@ model Negotiation {
 
   job               Job         @relation(fields: [jobId], references: [id])
   user              RegularUser @relation(fields: [userId], references: [id])
+  messages          Message[]
+}
+
+model Message {
+  id              Int      @id @default(autoincrement())
+  negotiationId   Int
+  senderId        Int
+  senderRole      String
+  message         String
+  createdAt       DateTime @default(now())
+
+  negotiation     Negotiation @relation(fields: [negotiationId], references: [id])
 }

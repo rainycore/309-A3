@@ -51,6 +51,9 @@ export default function Negotiation() {
     socket.on('connect', () => {
       socket.emit('join_negotiation', { negotiation_id: neg.id });
     });
+    socket.on('joined', (data) => {
+      if (data.history?.length) setMessages(data.history);
+    });
     socket.on('chat_message', (data) => {
       setMessages(prev => [...prev, data]);
     });

@@ -48,9 +48,14 @@ export default function Negotiation() {
     const token = localStorage.getItem('token');
     const socket = io(API_BASE, { auth: { token }, transports: ['websocket'] });
     socketRef.current = socket;
-    socket.emit('join_negotiation', { negotiation_id: neg.id });
+    socket.on('connect', () => {
+      socket.emit('join_negotiation', { negotiation_id: neg.id });
+    });
     socket.on('chat_message', (data) => {
       setMessages(prev => [...prev, data]);
+    });
+    socket.on('connect_error', (err) => {
+      console.error('Socket connection error:', err.message);
     });
     return () => socket.disconnect();
   }, [neg?.id]);
